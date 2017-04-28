@@ -5,9 +5,11 @@
 
 
 /* Tests playAdventurer
- * checks that 2 cards are drawn
- * checks that 2 treasure cards are drawn
- * checks that adventurer card is discarded
+ * -checks that 2 cards are drawn
+ * -checks that 2 treasure cards are drawn
+ * -checks that adventurer card is discarded
+ *	-checks that the supply piles are unchanged
+ *	-checks that other players' hands, discards, and decks are unchanged
  *
 */
 
@@ -15,7 +17,7 @@
 
 int main(){
 	
-	//Initialize gamestate
+	//Initializations
 	int seed = 1000;
 	int i;
 	int numPlayers = 2;
@@ -31,6 +33,8 @@ int main(){
 	}
 	int numTreasures = 0;
 
+
+	//initialize game state
 	int k[10] = {adventurer, council_room, feast, gardens, mine, remodel,
 						smithy, village, baron, great_hall};
 	
@@ -40,7 +44,11 @@ int main(){
 	G.handCount[p] = handCount;
 	G.whoseTurn = p;
 	memcpy(G.hand[p], hand, sizeof(int) * handCount);
+	
+	struct gameState G2;
+	memcpy(&G2, &G, sizeof(struct gameState)); // copy of game state for comparison
 
+	
 	//call function
 	playAdventurer(&G, handPos);
 
@@ -55,26 +63,32 @@ int main(){
 
 
 	//assert results
-	//assert(G.handCount[p] == handCount + 1); //check that two cards have been drawn
-	//assert(newNumTreasures == numTreasures + 2); //check that two treasure cards have been drawn
-	//assert(G.hand[p][handPos] != adventurer); // check that played card is discarded
 	
-	if(G.handCount[p] != handCount + 1)
-		printf("adventurer +2 cards test: FAIL\n");
-	else
-		printf("adventurer +2 cards test: SUCCESS\n");
-
-	if(newNumTreasures != numTreasures + 2)
-		printf("adventurer +2 treasure test: FAIL\n");
-	else
-		printf("adventurer +2 treasure test: SUCCESS\n");
-
-
-	if(G.hand[p][handPos] == adventurer)
-		printf("adventurer discard test: FAIL\n");
-	else
-		printf("adventurer discard test: SUCCESS\n");
+	//check that two cards have been drawn
+	asserttrue(G.handCount[p] == (handCount + 1), "adventurer +2 cards drawn test");
 	
+	//check that two treasure cards have been drawn
+	asserttrue(newNumTreasures == (numTreasures + 2), "adventurer +2 treasure test");
+	
+	//check that played card is discarded
+	asserttrue(G.hand[p][handPos] != adventurer, "adventurer discard test");
+	
+	//check that supply hasn't changed
+	asserttrue(0 == memcmp(G.supplyCount, G2.supplyCount, sizeof(int) * 27), "adventurer supply unchanged");
+
+	for(i = 0; i < numPlayers; i++){
+		if(i != p){
+			//check other hands aren't modified
+			asserttrue(0 == memcmp(G.hand[i], G2.hand[i], sizeof(int) * MAX_HAND), "adventurer other hands unchanged");
+
+			//check other decks aren't modified
+			asserttrue(0 == memcmp(G.deck[i], G2.deck[i], sizeof(int) * MAX_DECK), "adventurer other decks unchanged");
+
+			//check other discards aren't modified
+			asserttrue(0 == memcmp(G.discard[i], G2.discard[i], sizeof(int) * MAX_DECK), "adventurer other discards unchanged");
+
+		}
+	}
 	
 	return 0;
 }

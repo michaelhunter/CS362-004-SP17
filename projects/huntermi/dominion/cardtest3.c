@@ -1,4 +1,3 @@
-
 #include "dominion.h"
 #include <stdio.h>
 #include <assert.h>
@@ -6,9 +5,11 @@
 
 
 /* Tests playVillage
- * checks +2 actions
- * checks +1 card
- * checks card is dicarded
+ * -checks that 2 actions are added
+ * -checks that one card is drawn
+ * -checks that the played card is dicarded
+ *	-checks that the supply piles are unchanged
+ *	-checks that other players' hands, discards, and decks are unchanged
  *
 */
 
@@ -16,7 +17,7 @@
 
 int main(){
 	
-	//Initialize gamestate
+	//Initializations
 	
 	int seed = 1000;
 	int i;
@@ -32,10 +33,16 @@ int main(){
 		hand[i] = copper;
 	}
 
+	//initialize game state
+
 	int k[10] = {adventurer, council_room, feast, gardens, mine, remodel,
 						smithy, village, baron, great_hall};
 	struct gameState G;
 	initializeGame(numPlayers, k, seed, &G);
+
+	struct gameState G2;
+	memcpy(&G2, &G, sizeof(struct gameState)); // copy of game state for comparison
+
 
 	G.handCount[p] = handCount;
 	G.whoseTurn = p;
@@ -43,31 +50,41 @@ int main(){
 
 	int numActions = G.numActions;
 
+
+
 	//call function
 	playVillage(&G, handPos);
 
 
+
 	//assert results
-	//assert(G.numActions == numActions + 2); //check +2 actions
-	//assert(G.handCount[p] == handCount); //check +1 card 
-	//assert(G.hand[p][handPos] != village); //check that card was discarded
-	//printf("Village test: SUCCESS\n");
+	
+	//check +2 actions
+	asserttrue(G.numActions == (numActions + 2), "village +2 actions test");
+	
+	//check +1 card 
+	asserttrue(G.handCount[p] == handCount, "village +1 card drawn test");
+	
+	//check that card was discarded
+	asserttrue(G.hand[p][handPos] != village, "village discard test");
+	
+	//check that supply hasn't changed
+	asserttrue(0 == memcmp(G.supplyCount, G2.supplyCount, sizeof(int) * 27), "village supply unchanged");
 
-	if(G.numActions != numActions + 2)
-		printf("village +2 actions: FAIL\n");
-	else
-		printf("village +2 actions: SUCCESS\n");
+	
+	for(i = 0; i < numPlayers; i++){
+		if(i != p){
+			//check other hands aren't modified
+			asserttrue(0 == memcmp(G.hand[i], G2.hand[i], sizeof(int) * MAX_HAND), "village other hands unchanged");
 
-	if(G.handCount[p] != handCount)
-		printf("village +1 card: FAIL\n");
-	else
-		printf("village +1 card: SUCCESS\n");
+			//check other decks aren't modified
+			asserttrue(0 == memcmp(G.deck[i], G2.deck[i], sizeof(int) * MAX_DECK), "village other decks unchanged");
 
-	if(G.hand[p][handPos] == village)
-		printf("village discard: FAIL\n");
-	else
-		printf("village discard: SUCCESS\n");
+			//check other discards aren't modified
+			asserttrue(0 == memcmp(G.discard[i], G2.discard[i], sizeof(int) * MAX_DECK), "village other discards unchanged");
 
+		}
+	}
 
 	return 0;
 }

@@ -4,14 +4,16 @@
 #include <string.h>
 
 /*  Tests playSmithy()
- *  checks that card is discarded
- *  checks that three cards are drawn
- *
+ *  -checks that card is discarded
+ *  -checks that three cards are drawn
+ *	 -checks that deck has three fewer cards
+ *	 -checks that the supply piles are unchanged
+ *	 -checks that other players' hands, discards, and decks are unchanged
  *
 */
 
 int main(){
-	//initialize the gamestate
+	//initializations
 	
 	int seed = 1000;
 	int i;
@@ -27,32 +29,54 @@ int main(){
 		hand[i] = copper;
 	}
 
+
+	//initialize the game state
 	int k[10] = {adventurer, council_room, feast, gardens, mine, remodel,
 						smithy, village, baron, great_hall};
 	struct gameState G;
+	struct gameState G2;
 	initializeGame(numPlayers, k, seed, &G);
 
 	G.handCount[p] = handCount;
 	G.whoseTurn = p;
 	memcpy(G.hand[p], hand, sizeof(int) * handCount);
+	
+	memcpy(&G2, &G, sizeof(struct gameState)); // copy of game state for comparison
 
 
+	//call function
 	playSmithy(&G, handPos);
 
-	//assert results
-	//assert(G.hand[p][handPos] != smithy); // check card has been discarded
-	//assert(G.handCount[p] == handCount + 2);	//check that 3 cards have been drawn
-	//printf("Smithy test: SUCCESS\n");
-	
-	if(G.hand[p][handPos] == smithy)
-		printf("smithy discard: FAIL\n");
-	else
-		printf("smithy discard: SUCCESS\n");
 
-	if(G.handCount[p] != handCount + 2)
-		printf("smithy +3 cards: FAIL\n");
-	else
-		printf("smithy +3 cards: SUCCESS\n");
+
+	//assert results
+	//check card has been discarded
+	asserttrue(G.hand[p][handPos] != smithy, "smithy discard test");
+	
+	//check that 3 cards have been drawn
+	asserttrue(G.handCount[p] == handCount + 2, "smithy +3 cards drawn test");
+	
+	//check that deck has three fewer cards
+	asserttrue(G.deckCount[p] == G2.deckCount[p] - 3, "smithy deck -3 cards test");
+	
+	//check that supply hasn't changed
+	asserttrue(0 == memcmp(G.supplyCount, G2.supplyCount, sizeof(int) * 27), "smithy supply unchanged");
+	
+	
+	
+	for(i = 0; i < numPlayers; i++){
+		if(i != p){
+			//check other hands aren't modified
+			asserttrue(0 == memcmp(G.hand[i], G2.hand[i], sizeof(int) * MAX_HAND), "smithy other hands unchanged");
+
+			//check other decks aren't modified
+			asserttrue(0 == memcmp(G.deck[i], G2.deck[i], sizeof(int) * MAX_DECK), "smithy other decks unchanged");
+
+			//check other discards aren't modified
+			asserttrue(0 == memcmp(G.discard[i], G2.discard[i], sizeof(int) * MAX_DECK), "smithy other discards unchanged");
+
+		}
+	}
 
 	return 0;
 }

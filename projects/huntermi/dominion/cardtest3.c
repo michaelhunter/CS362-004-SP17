@@ -60,28 +60,28 @@ int main(){
 	//assert results
 	
 	//check +2 actions
-	asserttrue(G.numActions == (numActions + 2), "village +2 actions test");
+	asserttrue(G.numActions == (numActions + 2), "VILLAGE +2 actions test");
 	
 	//check +1 card 
-	asserttrue(G.handCount[p] == handCount, "village +1 card drawn test");
+	asserttrue(G.handCount[p] == handCount, "VILLAGE +1 card drawn test");
 	
 	//check that card was discarded
-	asserttrue(G.hand[p][handPos] != village, "village discard test");
+	asserttrue(G.hand[p][handPos] != village, "VILLAGE discard test");
 	
 	//check that supply hasn't changed
-	asserttrue(0 == memcmp(G.supplyCount, G2.supplyCount, sizeof(int) * 27), "village supply unchanged");
+	asserttrue(0 == memcmp(G.supplyCount, G2.supplyCount, sizeof(int) * 27), "VILLAGE supply unchanged");
 
 	
 	for(i = 0; i < numPlayers; i++){
 		if(i != p){
 			//check other hands aren't modified
-			asserttrue(0 == memcmp(G.hand[i], G2.hand[i], sizeof(int) * MAX_HAND), "village other hands unchanged");
+			asserttrue(0 == memcmp(G.hand[i], G2.hand[i], sizeof(int) * MAX_HAND), "VILLAGE other hands unchanged");
 
 			//check other decks aren't modified
-			asserttrue(0 == memcmp(G.deck[i], G2.deck[i], sizeof(int) * MAX_DECK), "village other decks unchanged");
+			asserttrue(0 == memcmp(G.deck[i], G2.deck[i], sizeof(int) * MAX_DECK), "VILLAGE other decks unchanged");
 
 			//check other discards aren't modified
-			asserttrue(0 == memcmp(G.discard[i], G2.discard[i], sizeof(int) * MAX_DECK), "village other discards unchanged");
+			asserttrue(0 == memcmp(G.discard[i], G2.discard[i], sizeof(int) * MAX_DECK), "VILLAGE other discards unchanged");
 
 		}
 	}

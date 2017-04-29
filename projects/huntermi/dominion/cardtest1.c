@@ -51,29 +51,29 @@ int main(){
 
 	//assert results
 	//check card has been discarded
-	asserttrue(G.hand[p][handPos] != smithy, "smithy discard test");
+	asserttrue(G.hand[p][handPos] != smithy, "SMITHY discard test");
 	
 	//check that 3 cards have been drawn
-	asserttrue(G.handCount[p] == handCount + 2, "smithy +3 cards drawn test");
+	asserttrue(G.handCount[p] == handCount + 2, "SMITHY +3 cards drawn test");
 	
 	//check that deck has three fewer cards
-	asserttrue(G.deckCount[p] == G2.deckCount[p] - 3, "smithy deck -3 cards test");
+	asserttrue(G.deckCount[p] == G2.deckCount[p] - 3, "SMITHY deck -3 cards test");
 	
 	//check that supply hasn't changed
-	asserttrue(0 == memcmp(G.supplyCount, G2.supplyCount, sizeof(int) * 27), "smithy supply unchanged");
+	asserttrue(0 == memcmp(G.supplyCount, G2.supplyCount, sizeof(int) * 27), "SMITHY supply unchanged");
 	
 	
 	
 	for(i = 0; i < numPlayers; i++){
 		if(i != p){
 			//check other hands aren't modified
-			asserttrue(0 == memcmp(G.hand[i], G2.hand[i], sizeof(int) * MAX_HAND), "smithy other hands unchanged");
+			asserttrue(0 == memcmp(G.hand[i], G2.hand[i], sizeof(int) * MAX_HAND), "SMITHY other hands unchanged");
 
 			//check other decks aren't modified
-			asserttrue(0 == memcmp(G.deck[i], G2.deck[i], sizeof(int) * MAX_DECK), "smithy other decks unchanged");
+			asserttrue(0 == memcmp(G.deck[i], G2.deck[i], sizeof(int) * MAX_DECK), "SMITHY other decks unchanged");
 
 			//check other discards aren't modified
-			asserttrue(0 == memcmp(G.discard[i], G2.discard[i], sizeof(int) * MAX_DECK), "smithy other discards unchanged");
+			asserttrue(0 == memcmp(G.discard[i], G2.discard[i], sizeof(int) * MAX_DECK), "SMITHY other discards unchanged");
 
 		}
 	}

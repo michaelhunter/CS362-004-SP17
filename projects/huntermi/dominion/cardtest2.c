@@ -65,27 +65,27 @@ int main(){
 	//assert results
 	
 	//check that two cards have been drawn
-	asserttrue(G.handCount[p] == (handCount + 1), "adventurer +2 cards drawn test");
+	asserttrue(G.handCount[p] == (handCount + 1), "ADVENTURER +2 cards drawn test");
 	
 	//check that two treasure cards have been drawn
-	asserttrue(newNumTreasures == (numTreasures + 2), "adventurer +2 treasure test");
+	asserttrue(newNumTreasures == (numTreasures + 2), "ADVENTURER +2 treasure test");
 	
 	//check that played card is discarded
-	asserttrue(G.hand[p][handPos] != adventurer, "adventurer discard test");
+	asserttrue(G.hand[p][handPos] != adventurer, "ADVENTURER discard test");
 	
 	//check that supply hasn't changed
-	asserttrue(0 == memcmp(G.supplyCount, G2.supplyCount, sizeof(int) * 27), "adventurer supply unchanged");
+	asserttrue(0 == memcmp(G.supplyCount, G2.supplyCount, sizeof(int) * 27), "ADVENTURER supply unchanged");
 
 	for(i = 0; i < numPlayers; i++){
 		if(i != p){
 			//check other hands aren't modified
-			asserttrue(0 == memcmp(G.hand[i], G2.hand[i], sizeof(int) * MAX_HAND), "adventurer other hands unchanged");
+			asserttrue(0 == memcmp(G.hand[i], G2.hand[i], sizeof(int) * MAX_HAND), "ADVENTURER other hands unchanged");
 
 			//check other decks aren't modified
-			asserttrue(0 == memcmp(G.deck[i], G2.deck[i], sizeof(int) * MAX_DECK), "adventurer other decks unchanged");
+			asserttrue(0 == memcmp(G.deck[i], G2.deck[i], sizeof(int) * MAX_DECK), "ADVENTURER other decks unchanged");
 
 			//check other discards aren't modified
-			asserttrue(0 == memcmp(G.discard[i], G2.discard[i], sizeof(int) * MAX_DECK), "adventurer other discards unchanged");
+			asserttrue(0 == memcmp(G.discard[i], G2.discard[i], sizeof(int) * MAX_DECK), "ADVENTURER other discards unchanged");
 
 		}
 	}

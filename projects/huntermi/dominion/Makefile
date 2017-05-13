@@ -2,7 +2,7 @@ CFLAGS = -Wall -fpic -coverage -lm
 GCOVFLAGS = -b
 UNITTESTS = unittest1 unittest2 unittest3 unittest4
 CARDTESTS = cardtest1 cardtest2 cardtest3 cardtest4
-
+RANDOMTESTS = randomtestcard1 randomtestcard2 randomtestadventurer
 
 rngs.o: rngs.h rngs.c
 	gcc -c rngs.c -g  $(CFLAGS)
@@ -35,7 +35,8 @@ runtests: testDrawCard
 
 
 unittestresults.out: $(UNITTESTS) $(CARDTESTS)
-#gcov -b -f dominion.c >> unittestresults.out
+
+
 
 unittest1: dominion.c rngs.c unittest1.c
 	echo "unittest1.c:" >> unittestresults.out
@@ -93,11 +94,37 @@ cardtest4: dominion.c rngs.c cardtest4.c
 	gcov $(GCOVFLAGS) dominion.c >> unittestresults.out
 
 
+randomtests: $(RANDOMTESTS)
+
+
+randomtestcard1: dominion.c rngs.c randomtestcard1.c
+	echo "randomtestcard1.c:" >> randomtestcard1.out
+	gcc -o randomtestcard1 dominion.c randomtestcard1.c rngs.c $(CFLAGS)
+	randomtestcard1 >> randomtestcard1.out
+	gcov $(GCOVFLAGS) dominion.c >> randomtestcard1.out
+
+
+randomtestcard2: dominion.c rngs.c randomtestcard2.c
+	echo "randomtestcard2.c:" >> randomtestcard2.out
+	gcc -o randomtestcard2 dominion.c randomtestcard2.c rngs.c $(CFLAGS)
+	randomtestcard2 >> randomtestcard2.out
+	gcov $(GCOVFLAGS) dominion.c >> randomtestcard3.out
+
+
+randomtestadventurer: dominion.c rngs.c randomtestadventurer.c
+	echo "randomtestadventurer.c:" >> randomtestadventurer.out
+	gcc -o randomtestadventurer dominion.c randomtestadventurer.c rngs.c $(CFLAGS)
+	randomtestadventurer >> randomtestadventurer.out
+	gcov $(GCOVFLAGS) dominion.c >> randomtestadventurer.out
+
+
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
 
 all: playdom player testDrawCard testBuyCard badTestDrawCard
 
+
 clean:
 	rm -f *.o playdom.exe playdom test.exe test player player.exe testInit testInit.exe *.gcov *.gcda *.gcno *.so *.out
 	rm -f cardtest1 cardtest2 cardtest3 cardtest4 unittest1 unittest2 unittest3 unittest4
+	rm -f randomtestcard1 randomtestcard2 randomtestadventurer

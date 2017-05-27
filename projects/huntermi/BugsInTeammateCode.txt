@@ -1,0 +1,56 @@
+Bug Name: Smithy +3 cards failure
+Assigned to: Travis Nykaza
+Reported by: Michael Hunter
+Reported: May 27, 2017
+Severity: Low
+Priority: Medium
+Status: Unresolved
+
+Description: playing the smithy card fails to give that player 3 cards.
+
+Symptoms: After playing the card, I end up with one card added to 
+	my hand instead of three. Causes function to fail card test
+	(see unittestresults.out).
+
+Reproduction: enter the following commands
+	make dominion.o (if not compiled)
+	make player     (if not compiled)
+	player 1
+	init 2 1
+	add 14
+	show
+	play 5
+	show
+
+Possible cause: calling the drawCard function too few times.
+	
+
+
+
+Bug Name: Adventurer Segmentation Fault
+Assigned to: Travis Nykaza
+Reported by: Michael Hunter
+Reported: May 27, 2017
+Severity: High
+Priority: High
+Status: Unresolved
+
+Description: Adventurer occasionally causes a segmentation fault 
+	under valid preconditions.
+
+Symptoms: After playing the card in a game of dominion, the 
+	program crashes, exiting with a segmentation fault.
+
+Reproduction: enter the following commands
+	make dominion.o (if not compiled)
+	make player     (if not compiled)
+	player 1
+	init 2 1
+	add 7
+	show
+	play 5
+	show
+
+Possible cause: running the test in gdb I found
+	that it fails on line 33:
+   cardDrawn = state->hand[cardDrawn][state->handCount[currentPlayer] - 1];

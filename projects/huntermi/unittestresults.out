@@ -1,0 +1,39 @@
+cardtest1.c:
+SMITHY discard test: SUCCESS
+SMITHY +3 cards drawn test: FAIL
+SMITHY deck -3 cards test: FAIL
+SMITHY supply unchanged: SUCCESS
+SMITHY other hands unchanged: SUCCESS
+SMITHY other decks unchanged: SUCCESS
+SMITHY other discards unchanged: SUCCESS
+File 'dominion.c'
+Lines executed:19.61% of 566
+Branches executed:17.88% of 425
+Taken at least once:14.35% of 425
+Calls executed:11.11% of 99
+Creating 'dominion.c.gcov'
+
+unittest4.c:
+player 0 score: 10
+player 0 expected: 10
+SCORE FOR score matches expected: SUCCESS
+SCORE FOR game state unchanged: SUCCESS
+player 1 score: 5
+player 1 expected: 5
+SCORE FOR score matches expected: SUCCESS
+SCORE FOR game state unchanged: SUCCESS
+player 2 score: 5
+player 2 expected: 5
+SCORE FOR score matches expected: SUCCESS
+SCORE FOR game state unchanged: SUCCESS
+player 3 score: -5
+player 3 expected: -5
+SCORE FOR score matches expected: SUCCESS
+SCORE FOR game state unchanged: SUCCESS
+File 'dominion.c'
+Lines executed:22.08% of 566
+Branches executed:28.24% of 425
+Taken at least once:20.94% of 425
+Calls executed:9.09% of 99
+Creating 'dominion.c.gcov'
+
